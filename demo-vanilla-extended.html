@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!-- Conditional comment for mobile ie7 http://blogs.msdn.com/b/iemobile/ -->
+<!--[if IEMobile 7 ]>		<html class="no-js iem7"> <![endif]-->
+<!--[if (gt IEMobile 7)|!(IEMobile)]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+	<meta charset="utf-8">
+
+	<title>Vanilla SimpleTouch plugin demo</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="css/reset.min.css">
+	<link rel="stylesheet" href="css/touchtest.css">
+
+</head>
+
+<body>
+
+	<div class="test swipe">
+		<div id="toucharea">trigger on move</div>
+		<a class="action" href="#" id="clear">clear</a>
+		<a class="action" href="touchEvents.html" id="refresh">refresh</a>
+	</div>
+
+	<div class="feedback" id="varlog">
+		<table>
+			<tr>
+				<td class="th">Last event:</td>
+				<td id="lasteventlog"></td>
+				<td class="th">Phase:</td>
+				<td id="phaselog"></td>
+			</tr>
+		</table>
+
+		<table id="touchlog">
+			<tr>
+				<th>x</th>
+				<td id="t0-x"></td>
+			</tr>
+			<tr>
+				<th>y</th>
+				<td id="t0-y"></td>
+			</tr>
+			<tr>
+				<th>dir</th>
+				<td id="t0-dir"></td>
+			</tr>
+			<tr>
+				<th>dist</th>
+				<td id="t0-dist"></td>
+			</tr>
+		</table>
+	</div>
+	<div class="feedback" id="log"></div>
+
+	<script src="js/swipe-events-constants.js" type="module"></script>
+	<script src="js/swipe-events-util.js" type="module"></script>
+	<script src="js/swipe-events.js" type="module"></script>
+	<script src="js/swipe-events-init-extended.js" type="module"></script>
+</body>
+
+</html>
