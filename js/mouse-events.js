@@ -4,7 +4,7 @@
 * and then call the appropriate eventHandler in swipeEvent.js
 */
 
-let touchHandlers;
+let touchHandlers;// will hold reference to touchHandler functions in swipe-events.js
 
 /**
 * enhance a mouse event to make it look like a touch event and then call the corresponding touchEventHandler
@@ -12,7 +12,7 @@ let touchHandlers;
 * @param {event} evt A mouse event
 * @returns {undefined}
 */
-var mimicTouchEvent = function(touchEventHandler, mouseEvt) {
+const mimicTouchEvent = function(touchEventHandler, mouseEvt) {
   //adds stuff to mouse event to make it look like a touch event
   let touchEvt = mouseEvt;
   let touches = [];
@@ -33,7 +33,7 @@ var mimicTouchEvent = function(touchEventHandler, mouseEvt) {
 * @param {event} evt Description
 * @returns {undefined}
 */
-var mousedownHandler = function(evt) {
+const mousedownHandler = function(evt) {
   const elm = evt.target;
   elm.removeEventListener('mousemove', mousemoveHandler);
   mimicTouchEvent(touchHandlers.touchStartHandler, evt);
@@ -46,8 +46,7 @@ var mousedownHandler = function(evt) {
 * @param {event} evt
 * @returns {undefined}
 */
-var mousemoveHandler = function(evt) {
-  console.log('mousemovehandler evt:', evt);
+const mousemoveHandler = function(evt) {
   mimicTouchEvent(touchHandlers.touchMoveHandler, evt);
 };
 
@@ -57,7 +56,7 @@ var mousemoveHandler = function(evt) {
 * @param {event} evt Description
 * @returns {undefined}
 */
-var mouseupHandler = function(evt) {
+const mouseupHandler = function(evt) {
   const elm = evt.target;
   elm.removeEventListener('mousemove', mousemoveHandler);
   mimicTouchEvent(touchHandlers.touchEndHandler, evt);
@@ -74,18 +73,6 @@ const initMouseEmulation = function(elm, handlers) {
   touchHandlers = {...handlers };// create reference to handlers in swipe-events.js
   elm.addEventListener('mousedown', mousedownHandler);
   elm.addEventListener('mouseup', mouseupHandler);
-  // elm.addEventListener('mousemove', mousemoveHandler);
-
-  // elm.addEventListener('mousedown', (evt) => {
-  //   mimicTouchEvent(touchHandlers.touchStartHandler, evt);
-  // });
-  // elm.addEventListener('mousemove', (evt) => {
-  //   mimicTouchEvent(touchHandlers.touchMoveHandler, evt);
-  // });
-  // elm.addEventListener('mouseup', (evt) => {
-  //   mimicTouchEvent(touchHandlers.touchEndHandler, evt);
-  // });
-  // elm.addEventListener('mouseup', mouseupHandler, false);
 };
 
 

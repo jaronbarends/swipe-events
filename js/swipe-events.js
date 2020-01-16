@@ -19,8 +19,8 @@ const defaults = {
 
 let config = {};
 
-// object to keep track of event statuses
-const state = {
+// object to keep track of event cycle statuses
+const cycle = {
   swipeEventEmitted: false,
   touchStarted: false,
 }
@@ -58,7 +58,6 @@ const resetTouchData = function() {
 * @returns {undefined}
 */
 const updateTouchData = function(evt) {
-  console.log('evt:', evt);
   //processes all relevant data for an event
   const touch = evt.touches[0];
   
@@ -79,12 +78,13 @@ const updateTouchData = function(evt) {
 * @param {string} phs The current phase. Must be defined in fsC
 * @returns {undefined}
 */
-var setPhase = function(phase) {
+const setPhase = function(phase) {
   //sets the new phase
+  console.log('phase:', phase);
   touchData.prevPhase = touchData.phase;
   touchData.phase = phase;
   if (phase === constants.PHASE_CANCEL || phase === constants.PHASE_END) {
-    state.touchStarted = false;
+    cycle.touchStarted = false;
   }
 };
 
@@ -98,11 +98,11 @@ var setPhase = function(phase) {
 * @returns {undefined}
 */
 const touchStartHandler = function(evt) {
-  if (!state.touchStarted) {
+  if (!cycle.touchStarted) {
     // it's really the start of a new touch
-    state.touchStarted = true;
+    cycle.touchStarted = true;
     // reset vars that change on every touch-cycle
-    state.swipeEventEmitted = false;
+    cycle.swipeEventEmitted = false;
     resetTouchData();
     
     setPhase(constants.PHASE_START_MOVE);
@@ -130,12 +130,11 @@ const touchMoveHandler = function(evt) {
 
 
 const touchEndHandler = function(evt) {
-  console.log('touchEndHandler');
   if (evt.touches.length === 0) {
     //it's really the end of this touch, and not just one finger being lifted
     setPhase(constants.PHASE_END);
     if (util.distanceHasPassedThreshold(touchData, config)) {
-      console.log('yay');
+      console.log('yay - passed threshold');
       emitSwipeEvents(evt.target);
     } else {
       console.log('did not pass threshold');
@@ -154,6 +153,7 @@ const touchEndHandler = function(evt) {
 */
 const emitEvent = function(elm, evtName, detail = {}) {
   const evt = new CustomEvent(`${evtName}.swipeevent`, {detail});
+  console.log('dispatch', evt);
   elm.dispatchEvent(evt);
 };
 
@@ -164,7 +164,7 @@ const emitEvent = function(elm, evtName, detail = {}) {
 * @param {html element} elm - The element that should emit the event
 * @returns {undefined}
 */
-var emitSwipeEvents = function(elm) {
+const emitSwipeEvents = function(elm) {
   // trigger catch all event handler
   emitEvent(elm, constants.EVENT_SWIPE, touchData);
   
@@ -173,14 +173,6 @@ var emitSwipeEvents = function(elm) {
   emitEvent(elm, directionalEvtName, touchData);
 };
 
-
-
-/*-- Start mousefunctions --*/
-
-
-
-
-/*-- End mousefunctions --*/
 
 
 
