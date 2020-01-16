@@ -58,6 +58,7 @@ const resetTouchData = function() {
 * @returns {undefined}
 */
 const updateTouchData = function(evt) {
+  console.log('evt:', evt);
   //processes all relevant data for an event
   const touch = evt.touches[0];
   

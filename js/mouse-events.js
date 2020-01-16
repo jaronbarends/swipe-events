@@ -1,3 +1,9 @@
+/*
+* adds mouse event listeners to element,
+* transforms those mouse events into objects looking like touch events
+* and then call the appropriate eventHandler in swipeEvent.js
+*/
+
 let touchHandlers;
 
 /**
@@ -8,7 +14,7 @@ let touchHandlers;
 */
 var mimicTouchEvent = function(touchEventHandler, mouseEvt) {
   //adds stuff to mouse event to make it look like a touch event
-  let touchEvt = {...mouseEvt};
+  let touchEvt = mouseEvt;
   let touches = [];
   if (touchEventHandler !== touchHandlers.touchEndHandler) {
     touches.push({
@@ -29,9 +35,9 @@ var mimicTouchEvent = function(touchEventHandler, mouseEvt) {
 */
 var mousedownHandler = function(evt) {
   const elm = evt.target;
-  elm.removeEventListener('mousemove', touchHandlers.touchMoveHandler);
+  elm.removeEventListener('mousemove', mousemoveHandler);
   mimicTouchEvent(touchHandlers.touchStartHandler, evt);
-  elm.addEventListener('mousemove', touchHandlers.touchMoveHandler);
+  elm.addEventListener('mousemove', mousemoveHandler);
 };
 
 
@@ -41,6 +47,7 @@ var mousedownHandler = function(evt) {
 * @returns {undefined}
 */
 var mousemoveHandler = function(evt) {
+  console.log('mousemovehandler evt:', evt);
   mimicTouchEvent(touchHandlers.touchMoveHandler, evt);
 };
 
@@ -52,7 +59,7 @@ var mousemoveHandler = function(evt) {
 */
 var mouseupHandler = function(evt) {
   const elm = evt.target;
-  elm.removeEventListener('mousemove', touchHandlers.touchMoveHandler);
+  elm.removeEventListener('mousemove', mousemoveHandler);
   mimicTouchEvent(touchHandlers.touchEndHandler, evt);
 };
 
